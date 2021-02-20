@@ -292,11 +292,12 @@ Mine.fill = function (x, y) {
     return
   }
 
-  if (Mine.grid[x][y].revealed) {
+  let item = Mine.grid[x][y]
+  
+  if (item.revealed) {
     return
   }
 
-  let item = Mine.grid[x][y]
   let cont = item.number === 0
 
   if (!item.revealed) {
@@ -308,6 +309,10 @@ Mine.fill = function (x, y) {
     Mine.fill(x + 1, y)
     Mine.fill(x, y - 1)
     Mine.fill(x, y + 1)
+    Mine.fill(x - 1, y + 1)
+    Mine.fill(x + 1, y - 1)
+    Mine.fill(x + 1, y + 1)
+    Mine.fill(x - 1, y - 1)
   }
 }
 
