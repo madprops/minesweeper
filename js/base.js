@@ -24,6 +24,7 @@ Mine.init = function () {
 }
 
 Mine.start = function () {
+  Mine.over = false
   Mine.main_el.classList.remove('boom')
   Mine.playing = true
   Mine.num_bombs = Mine.initial_bombs
@@ -204,6 +205,7 @@ Mine.setnumber = function (item, s) {
 }
 
 Mine.gameover = function (mode) {
+  Mine.over = true
   Mine.playing = false
 
   for (let row of Mine.grid) {
@@ -412,12 +414,14 @@ Mine.toggle_pause = function () {
 }
 
 Mine.pause = function () {
+  if (Mine.over) return
   if (!Mine.playing) return
   Mine.playing = false
   Mine.time_el.textContent += ' (Paused)'
 }
 
 Mine.unpause = function () {
+  if (Mine.over) return
   if (Mine.playing) return
   Mine.playing = true
   Mine.update_time()
