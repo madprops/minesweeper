@@ -27,6 +27,7 @@ body, html {
   margin-bottom: 12px;
   width: 800px;
   font-size: 18px;
+  user-select: none;
 }
 
 #time {

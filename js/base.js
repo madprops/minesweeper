@@ -199,7 +199,11 @@ Mine.gameover = function (mode) {
 
   for (let row of Mine.grid) {
     for (let item of row) {
-      item.block.classList.add('revealed')
+      if (item.bomb) {
+        if (!item.revealed) {
+          Mine.reveal(item)
+        }
+      }
     }
   }
 
@@ -223,7 +227,7 @@ Mine.floodfill = function (x, y) {
   let item = Mine.grid[x][y]
 
   if (item.number > 0) {
-    Mine.reveal(x, y)
+    Mine.reveal(item)
     return
   }
 
@@ -255,7 +259,7 @@ Mine.fill = function (x, y) {
   let cont = item.number === 0
 
   if (!item.revealed) {
-    Mine.reveal(x, y)
+    Mine.reveal(item)
   }
 
   if (cont) {
@@ -266,8 +270,7 @@ Mine.fill = function (x, y) {
   }
 }
 
-Mine.reveal = function (x, y) {
-  let item = Mine.grid[x][y]
+Mine.reveal = function (item) {
   item.block.classList.add('revealed')
   item.revealed = true
 }
