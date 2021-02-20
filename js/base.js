@@ -102,6 +102,8 @@ Mine.shuffle = function (arr) {
 }
 
 Mine.create_bombs = function (x, y) {
+  if (Mine.bombs_created) return
+  
   let pairs = []
   for (let x = 0; x < Mine.grid_size; x++) {
     for (let y = 0; y < Mine.grid_size; y++) {
@@ -121,6 +123,7 @@ Mine.create_bombs = function (x, y) {
   }
 
   Mine.bombs_created = true
+  Mine.check_bombs()
 }
 
 Mine.check_bombs = function () {
@@ -201,12 +204,7 @@ Mine.random_int = function (min, max) {
 
 Mine.onclick = function (x, y) {
   if (!Mine.playing) return
-
-  if (!Mine.bombs_created) {
-    Mine.create_bombs(x, y)
-    Mine.check_bombs()
-  }
-  
+  Mine.create_bombs(x, y)
   let item = Mine.grid[x][y]
   if (item.revealed) return
   
@@ -327,6 +325,7 @@ Mine.reveal = function (item) {
 
 Mine.flag = function (x, y, check = true) {
   if (!Mine.playing) return
+  Mine.create_bombs(x, y)
   let item = Mine.grid[x][y]
   if (item.revealed) return
   item.flag = !item.flag
