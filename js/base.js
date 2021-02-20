@@ -38,6 +38,7 @@ Mine.start = function () {
   Mine.check_level()
   Mine.over = false
   Mine.num_revealed = 0
+  Mine.num_clicks = 0
   Mine.main_el.classList.remove('boom')
   Mine.playing = true
   Mine.num_bombs = Mine.initial_bombs
@@ -205,13 +206,15 @@ Mine.onclick = function (x, y) {
     Mine.create_bombs(x, y)
     Mine.check_bombs()
   }
-
+  
   let item = Mine.grid[x][y]
   if (item.revealed) return
-
+  
   if (item.flag) {
     Mine.flag(x, y, false)
   }
+  
+  Mine.num_clicks += 1
 
   if (item.bomb) {
     item.block.classList.add('bombhit')
@@ -478,7 +481,7 @@ Mine.start_levels = function () {
 
 Mine.ask_restart = function () {
   if (Mine.playing) {
-    if (Mine.num_revealed > 0) {
+    if (Mine.num_clicks > 1) {
       if (confirm('Restart Game?')) Mine.start()
       return
     }
