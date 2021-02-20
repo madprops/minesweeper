@@ -109,15 +109,15 @@ body, html {
 
 @keyframes bgchange {
   0% {
-    background-color: var(--bgcolor);
+    filter: grayscale(0);
   }
 
   50% {
-    background-color: orangered;
+    filter: grayscale(1);
   }
 
   100% {
-    background-color: var(--bgcolor);
+    filter: grayscale(0);
   }
 }
 
