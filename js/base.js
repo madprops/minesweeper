@@ -441,7 +441,10 @@ Mine.start_levels = function () {
   Mine.levels_el.addEventListener('click', function (e) {
     let level = e.target.dataset.level
     if (level) {
-      if (level === Mine.level) return
+      if (level === Mine.level) {
+        Mine.ask_restart()
+        return
+      }
 
       for (let div of Array.from(Mine.levels_el.querySelectorAll('div'))) {
         div.classList.remove('level_selected')
