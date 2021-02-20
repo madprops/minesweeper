@@ -42,8 +42,8 @@ Mine.create_grid = function () {
       let block = document.createElement('div')
       block.style.width = size + 'px'
       block.style.height = size + 'px'
-      block.style.left = x
-      block.style.top = y
+      block.style.left = x + 'px'
+      block.style.top = y + 'px'
       block.classList.add('block')
       
       block.addEventListener('click', function () {
