@@ -67,6 +67,7 @@ body, html {
 
 .revealed {
   background-color: var(--bgcolor3);
+  cursor: unset;
 }
 
 .block .number {
