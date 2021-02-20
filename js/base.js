@@ -4,6 +4,7 @@ Mine.grid_size = 15
 Mine.max_time = 300
 
 Mine.init = function () {
+  Mine.main_el = document.querySelector('#main')
   Mine.grid_el = document.querySelector('#grid')
   Mine.bombs_el = document.querySelector('#bombs')
   Mine.time_el = document.querySelector('#time')
@@ -19,6 +20,7 @@ Mine.init = function () {
 }
 
 Mine.start = function () {
+  Mine.main_el.classList.remove('boom')
   Mine.playing = true
   Mine.num_bombs = Mine.initial_bombs
   Mine.time = 0
@@ -210,6 +212,10 @@ Mine.gameover = function (mode) {
   } else if (mode === "timeout") {
     Mine.bombs_el.textContent += ' - Out of Time! (click to restart)'
     Mine.playsound(Mine.explosion_fx)
+  }
+
+  if (mode !== "won") {
+    Mine.main_el.classList.add('boom')
   }
 }
 

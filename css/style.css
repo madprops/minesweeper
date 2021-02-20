@@ -1,3 +1,7 @@
+:root {
+  --bgcolor: rgb(22, 20, 20);
+}
+
 body, html {
   margin: 0;
   padding: 0;
@@ -7,7 +11,7 @@ body, html {
 }
 
 #main {
-  background-color: rgb(22, 20, 20);
+  background-color: var(--bgcolor);
   width: 100%;
   height: 100%;
   display: flex;
@@ -84,4 +88,22 @@ body, html {
 .bombhit {
   border: 5px #b34de2 solid;
   box-sizing: border-box;
+}
+
+@keyframes bgchange {
+  0% {
+    background-color: var(--bgcolor);
+  }
+
+  50% {
+    background-color: orangered;
+  }
+
+  100% {
+    background-color: var(--bgcolor);
+  }
+}
+
+.boom {
+  animation: bgchange 500ms forwards;
 }
