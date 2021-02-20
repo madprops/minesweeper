@@ -1,6 +1,7 @@
 const Mine = {}
 Mine.initial_bombs = 30
 Mine.grid_size = 15
+Mine.max_time = 300
 
 Mine.init = function () {
   Mine.grid_el = document.querySelector('#grid')
@@ -312,7 +313,7 @@ Mine.start_time = function () {
     if (Mine.playing) {
       Mine.time += 1
       Mine.update_time()
-      if (Mine.time >= 999) {
+      if (Mine.time >= Mine.max_time) {
         Mine.gameover()
       }
     }
