@@ -37,15 +37,15 @@ Mine.create_grid = function () {
   let y = 0
   let row = []
 
-  for (let xx=0; xx<Mine.grid_size; xx++) {
-    for (let yy=0; yy<Mine.grid_size; yy++) {
+  for (let xx = 0; xx < Mine.grid_size; xx++) {
+    for (let yy = 0; yy < Mine.grid_size; yy++) {
       let block = document.createElement('div')
       block.style.width = size + 'px'
       block.style.height = size + 'px'
       block.style.left = x + 'px'
       block.style.top = y + 'px'
       block.classList.add('block')
-      
+
       block.addEventListener('click', function () {
         Mine.onclick(xx, yy)
       })
@@ -74,15 +74,17 @@ Mine.create_grid = function () {
 }
 
 Mine.shuffle = function (arr) {
-  if (arr.length === 1) {return arr}
+  if (arr.length === 1) {
+    return arr
+  }
   const rand = Math.floor(Math.random() * arr.length)
   return [arr[rand], ...Mine.shuffle(arr.filter((_, i) => i != rand))]
 }
 
 Mine.create_bombs = function () {
   let pairs = []
-  for (let x=0; x<Mine.grid_size; x++) {
-    for (let y=0; y<Mine.grid_size; y++) {
+  for (let x = 0; x < Mine.grid_size; x++) {
+    for (let y = 0; y < Mine.grid_size; y++) {
       pairs.push([x, y])
     }
   }
@@ -95,8 +97,8 @@ Mine.create_bombs = function () {
 }
 
 Mine.check_bombs = function () {
-  for (let x=0; x<Mine.grid_size; x++) {
-    for (let y=0; y<Mine.grid_size; y++) {
+  for (let x = 0; x < Mine.grid_size; x++) {
+    for (let y = 0; y < Mine.grid_size; y++) {
       let number = 0
 
       if (y > 0) {
@@ -179,7 +181,7 @@ Mine.onclick = function (x, y) {
 
   if (item.bomb) {
     item.block.classList.add('bombhit')
-    Mine.gameover()
+    Mine.gameover("explosion")
     return
   } else {
     if (item.revealed) return
@@ -190,7 +192,7 @@ Mine.onclick = function (x, y) {
   Mine.playsound(Mine.click_fx)
 }
 
-Mine.gameover = function (won = false) {
+Mine.gameover = function (mode) {
   Mine.playing = false
 
   for (let row of Mine.grid) {
@@ -199,20 +201,23 @@ Mine.gameover = function (won = false) {
     }
   }
 
-  if (won) {
-    Mine.bombs_el.textContent += ' - You won! (click to restart)'
+  if (mode === "won") {
+    Mine.bombs_el.textContent += ' - You won! (Click to Restart)'
     Mine.playsound(Mine.victory_fx)
-  } else {
-    Mine.bombs_el.textContent += ' (click to restart)'
+  } else if (mode === "explosion") {
+    Mine.bombs_el.textContent += ' - Boom! (click to restart)'
+    Mine.playsound(Mine.explosion_fx)
+  } else if (mode === "timeout") {
+    Mine.bombs_el.textContent += ' - Out of Time! (click to restart)'
     Mine.playsound(Mine.explosion_fx)
   }
 }
 
 Mine.floodfill = function (x, y) {
   let item = Mine.grid[x][y]
-  
+
   if (item.number > 0) {
-    Mine.reveal(x,  y)
+    Mine.reveal(x, y)
     return
   }
 
@@ -220,19 +225,19 @@ Mine.floodfill = function (x, y) {
 }
 
 Mine.fill = function (x, y) {
-  if(x < 0) {
+  if (x < 0) {
     return
   }
 
-  if(y < 0) {
+  if (y < 0) {
     return
   }
 
-  if(x > Mine.grid.length - 1) {
+  if (x > Mine.grid.length - 1) {
     return
   }
 
-  if(y > Mine.grid[x].length - 1) {
+  if (y > Mine.grid[x].length - 1) {
     return
   }
 
@@ -285,12 +290,12 @@ Mine.update_bombs = function () {
   let s
 
   if (Mine.num_bombs === 1) {
-    s = 'bomb'
+    s = 'Bomb'
   } else {
-    s = 'bombs'
+    s = 'Bombs'
   }
 
-  Mine.bombs_el.textContent = `${Mine.num_bombs} ${s} left`
+  Mine.bombs_el.textContent = `${Mine.num_bombs} ${s} Left`
 }
 
 Mine.start_info = function () {
@@ -310,8 +315,12 @@ Mine.update_info = function () {
   Mine.update_time()
 }
 
+Mine.timestring = function (n) {
+  return n.toString().padStart(3, "0")
+}
+
 Mine.update_time = function () {
-  Mine.time_el.textContent = Mine.time.toString().padStart(3, "0")
+  Mine.time_el.textContent = Mine.timestring(Mine.time) + ' / ' + Mine.timestring(Mine.max_time)
 }
 
 Mine.start_time = function () {
@@ -322,7 +331,7 @@ Mine.start_time = function () {
       Mine.time += 1
       Mine.update_time()
       if (Mine.time >= Mine.max_time) {
-        Mine.gameover()
+        Mine.gameover("timeout")
       }
     }
   }, 1000)
@@ -330,7 +339,7 @@ Mine.start_time = function () {
 
 Mine.check_status = function () {
   if (Mine.do_check_status()) {
-    Mine.gameover(true)
+    Mine.gameover("won")
   }
 }
 
