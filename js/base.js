@@ -412,11 +412,13 @@ Mine.toggle_pause = function () {
 }
 
 Mine.pause = function () {
+  if (!Mine.playing) return
   Mine.playing = false
   Mine.time_el.textContent += ' (Paused)'
 }
 
 Mine.unpause = function () {
+  if (Mine.playing) return
   Mine.playing = true
   Mine.update_time()
 }
