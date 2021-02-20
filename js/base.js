@@ -243,7 +243,7 @@ Mine.fill = function (x, y) {
   let item = Mine.grid[x][y]
   let cont = item.number === 0
 
-  if (!item.reveal) {
+  if (!item.revealed) {
     Mine.reveal(x, y)
   }
 
