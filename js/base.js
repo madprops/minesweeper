@@ -182,6 +182,7 @@ Mine.onclick = function (x, y) {
     Mine.gameover()
     return
   } else {
+    if (item.revealed) return
     Mine.floodfill(x, y)
   }
 

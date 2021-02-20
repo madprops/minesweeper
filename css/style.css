@@ -32,6 +32,7 @@ body, html {
   width: 800px;
   height: 800px;
   position: relative;
+  user-select: none
 }
 
 .block {
@@ -42,6 +43,7 @@ body, html {
   align-items: center;
   justify-content: center;
   border-radius: 33.3%;
+  cursor: pointer;
 }
 
 .revealed {
