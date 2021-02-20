@@ -1,5 +1,8 @@
 :root {
   --bgcolor: rgb(22, 20, 20);
+  --bgcolor2: lightblue;
+  --bgcolor3: #a8c8d2;
+  --bgcolor4: #87c2f6;
 }
 
 body, html {
@@ -35,7 +38,7 @@ body, html {
 }
 
 #grid {
-  background-color: lightblue;
+  background-color: var(--bgcolor2);
   width: 800px;
   height: 800px;
   position: relative;
@@ -54,15 +57,19 @@ body, html {
 }
 
 .revealed {
-  background-color: rgb(120, 182, 120);
+  background-color: var(--bgcolor3);
 }
 
 .block .number {
   display: none;
-  color: rgb(77, 77, 77);
+  color: white;
 }
 
 .revealed .number {
+  display: block;
+}
+
+.flag .number {
   display: block;
 }
 
@@ -75,11 +82,11 @@ body, html {
 }
 
 .flag {
-  background-color: lightsalmon;
+  background-color: var(--bgcolor4);
 }
 
 .bomb.flag {
-  background-color: lightsalmon;
+  background-color: var(--bgcolor4);;
 }
 
 #bombs {

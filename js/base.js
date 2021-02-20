@@ -164,6 +164,7 @@ Mine.check_bombs = function () {
         }
       }
 
+      item.og_number = text.textContent
       item.block.append(text)
     }
   }
@@ -194,6 +195,10 @@ Mine.onclick = function (x, y) {
   Mine.playsound(Mine.click_fx)
 }
 
+Mine.setnumber = function (item, s) {
+  item.block.querySelector('.number').textContent = s
+}
+
 Mine.gameover = function (mode) {
   Mine.playing = false
 
@@ -202,6 +207,10 @@ Mine.gameover = function (mode) {
       if (item.bomb) {
         if (!item.revealed) {
           Mine.reveal(item)
+        }
+
+        if (item.flag) {
+          Mine.setnumber(item, item.og_number)
         }
       }
     }
@@ -282,9 +291,11 @@ Mine.flag = function (x, y, check = true) {
 
   if (item.flag) {
     item.block.classList.add('flag')
+    Mine.setnumber(item, '⚑')
     Mine.num_bombs -= 1
   } else {
     item.block.classList.remove('flag')
+    Mine.setnumber(item, item.og_number)
     Mine.num_bombs += 1
   }
 
