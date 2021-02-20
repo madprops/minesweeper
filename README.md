@@ -1,5 +1,3 @@
 [Live Demo Here](https://madprops.github.io/minesweeper/)
 
-![](https://i.imgur.com/8IEDW3x.jpg)
-
-![](https://i.imgur.com/FufhBCJ.jpg)
+![](https://i.imgur.com/ugK6Kf6.jpg)
