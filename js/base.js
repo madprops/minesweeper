@@ -207,7 +207,7 @@ Mine.gameover = function (mode) {
     Mine.bombs_el.textContent += ' - You won! (Click to Restart)'
     Mine.playsound(Mine.victory_fx)
   } else if (mode === "explosion") {
-    Mine.bombs_el.textContent += ' - Boom! (click to restart)'
+    Mine.bombs_el.textContent += ' - Boom! (Click to Restart)'
     Mine.playsound(Mine.explosion_fx)
   } else if (mode === "timeout") {
     Mine.bombs_el.textContent += ' - Out of Time! (click to restart)'
