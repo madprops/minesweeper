@@ -3,6 +3,7 @@
   --bgcolor2: lightblue;
   --bgcolor3: #a8c8d2;
   --bgcolor4: #87c2f6;
+  --bgcolor5: rgb(209, 227, 233);
 }
 
 body, html {
@@ -48,7 +49,7 @@ body, html {
 .block {
   box-shadow: 0 0 0.29rem rgb(95, 120, 189);
   position: absolute;
-  background-color: rgb(209, 227, 233);
+  background-color: var(--bgcolor5);
   display: flex;
   align-items: center;
   justify-content: center;
