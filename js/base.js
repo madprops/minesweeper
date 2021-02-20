@@ -240,9 +240,12 @@ Mine.fill = function (x, y) {
     return
   }
 
-  let cont = Mine.grid[x][y].number === 0
+  let item = Mine.grid[x][y]
+  let cont = item.number === 0
 
-  Mine.reveal(x, y)
+  if (!item.reveal) {
+    Mine.reveal(x, y)
+  }
 
   if (cont) {
     Mine.fill(x - 1, y)
@@ -311,7 +314,7 @@ Mine.update_time = function () {
 
 Mine.start_time = function () {
   clearInterval(Mine.time_interval)
-  
+
   Mine.time_interval = setInterval(() => {
     if (Mine.playing) {
       Mine.time += 1
