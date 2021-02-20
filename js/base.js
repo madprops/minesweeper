@@ -15,9 +15,15 @@ Mine.init = function () {
     e.preventDefault()
   })
 
-  window.onblur = function () {
-    Mine.pause()
-  }
+  document.addEventListener(
+    "visibilitychange",
+    function () {
+      if (document.hidden) {
+        Mine.pause()
+      }
+    },
+    false
+  )
 
   Mine.start()
   Mine.start_info()
