@@ -153,7 +153,7 @@ Mine.check_bombs = function () {
       text.classList.add('number')
 
       if (item.bomb) {
-        text.textContent = 'B'
+        text.textContent = '💣️'
       } else {
         if (number > 0) {
           text.textContent = number
