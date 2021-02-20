@@ -1,6 +1,7 @@
 :root {
   --size: 777px;
-  --bgcolor: rgb(22, 20, 20);
+  --padding1: 5px;
+  --bgcolor1: rgb(22, 20, 20);
   --bgcolor2: lightblue;
   --bgcolor3: #a8c8d2;
   --bgcolor4: #87c2f6;
@@ -36,7 +37,7 @@ body, html {
 }
 
 #top > div {
-  padding: 0.5rem;;
+  padding: var(--padding1);
 }
 
 #levels {
@@ -50,7 +51,7 @@ body, html {
 }
 
 #levels > div {
-  padding: 0.5rem;
+  padding: var(--padding1);
   cursor: pointer;
 }
 
@@ -61,7 +62,7 @@ body, html {
 #info {
   display: flex;
   flex-direction: row;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   user-select: none;
   background-color: var(--bgcolor6);
 }
@@ -69,7 +70,7 @@ body, html {
 #time {
   margin-left: auto;
   cursor: pointer;
-  padding: 0.5rem;
+  padding: var(--padding1);
 }
 
 #grid {
@@ -129,7 +130,7 @@ body, html {
 
 #bombs {
   cursor: pointer;
-  padding: 0.5rem;
+  padding: var(--padding1);
 }
 
 .bombhit {
