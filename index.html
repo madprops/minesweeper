@@ -1,22 +1,27 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html> -->
 
-<link rel='stylesheet' type='text/css' href='css/style.css'>
-<script src='js/base.js'></script>
+<head>
+  <meta charset="utf-8">
+  <link rel='stylesheet' type='text/css' href='css/style.css'>
+  <script src='js/base.js'></script>
+  
+  <script>
+    window.onload = function () {
+      Mine.init()
+    }
+  </script>
+</head>
 
-<script>
-  window.onload = function () {
-    Mine.init()
-  }
-</script>
-
-<div id='main'>
-  <div id='info'>
-    <div id='bombs'></div>
-    <div id='time'></div>
+<body>
+  <div id='main'>
+    <div id='info'>
+      <div id='bombs'></div>
+      <div id='time'></div>
+    </div>
+    <div id='grid'></div>
   </div>
-  <div id='grid'></div>
-</div>
-
-<audio id='audio_explosion' src='audio/explosion.mp3'></audio>
-<audio id='audio_click' src='audio/click.mp3'></audio>
-<audio id='audio_victory' src='audio/victory.mp3'></audio>
+  
+  <audio id='audio_explosion' src='audio/explosion.mp3'></audio>
+  <audio id='audio_click' src='audio/click.mp3'></audio>
+  <audio id='audio_victory' src='audio/victory.mp3'></audio>
+</body>
