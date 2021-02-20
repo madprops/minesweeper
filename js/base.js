@@ -480,7 +480,12 @@ Mine.start_levels = function () {
 }
 
 Mine.check_level = function () {
-  if (Mine.level === 'small') {
+  if (Mine.level === 'tiny') {
+    Mine.initial_bombs = 5
+    Mine.grid_size = 5
+    Mine.max_time = 50
+
+  } else if (Mine.level === 'small') {
     Mine.initial_bombs = 10
     Mine.grid_size = 10
     Mine.max_time = 100
