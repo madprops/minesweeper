@@ -28,13 +28,40 @@ body, html {
   background-repeat: no-repeat;
 }
 
-#info {
+#top {
+  background-color: var(--bgcolor2);
+  width: var(--size);
+  font-size: 18px;
   color: white;
+}
+
+#top > div {
+  padding: 0.5rem;;
+}
+
+#levels {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 6px;
+  background-color: var(--bgcolor6);
+  user-select: none;
+  align-items: center;
+  justify-content: center;
+}
+
+#levels > div {
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.level_selected {
+  text-decoration: underline;
+}
+
+#info {
   display: flex;
   flex-direction: row;
   margin-bottom: 12px;
-  width: var(--size);
-  font-size: 18px;
   user-select: none;
   background-color: var(--bgcolor6);
 }
@@ -51,7 +78,8 @@ body, html {
   height: var(--size);
   position: relative;
   user-select: none;
-  border-radius: 5%;
+  border-bottom-left-radius: 5%;
+  border-bottom-right-radius: 5%;
 }
 
 .block {
@@ -125,23 +153,4 @@ body, html {
 
 .boom {
   animation: bgchange 500ms forwards;
-}
-
-#levels {
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 0.5rem;
-  font-size: 18px;
-  color: white;
-  background-color: var(--bgcolor6);
-  user-select: none;
-}
-
-#levels > div {
-  padding: 0.5rem;
-  cursor: pointer;
-}
-
-.level_selected {
-  text-decoration: underline;
 }
