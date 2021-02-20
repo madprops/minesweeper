@@ -1,13 +1,17 @@
 const Mine = {}
-Mine.initial_bombs = 30
-Mine.grid_size = 15
-Mine.max_time = 300
+Mine.level = 'normal'
 
 Mine.init = function () {
+  let style = getComputedStyle(document.body)
+  Mine.size = parseInt(style.getPropertyValue('--size'))
   Mine.main_el = document.querySelector('#main')
   Mine.grid_el = document.querySelector('#grid')
   Mine.bombs_el = document.querySelector('#bombs')
   Mine.time_el = document.querySelector('#time')
+  Mine.levels_el = document.querySelector('#levels')
+  Mine.level_small_el = document.querySelector('#level_small')
+  Mine.level_normal_el = document.querySelector('#level_normal')
+  Mine.level_big_el = document.querySelector('#level_big')
   Mine.explosion_fx = document.querySelector('#audio_explosion')
   Mine.click_fx = document.querySelector('#audio_click')
   Mine.victory_fx = document.querySelector('#audio_victory')
@@ -27,10 +31,13 @@ Mine.init = function () {
 
   Mine.start()
   Mine.start_info()
+  Mine.start_levels()
 }
 
 Mine.start = function () {
+  Mine.check_level()
   Mine.over = false
+  Mine.num_revealed = 0
   Mine.main_el.classList.remove('boom')
   Mine.playing = true
   Mine.num_bombs = Mine.initial_bombs
@@ -45,7 +52,7 @@ Mine.start = function () {
 Mine.create_grid = function () {
   Mine.grid_el.innerHTML = ''
   Mine.grid = []
-  let size = 800 / Mine.grid_size
+  let size = Mine.size / Mine.grid_size
   let x = 0
   let y = 0
   let row = []
@@ -294,6 +301,7 @@ Mine.fill = function (x, y) {
 Mine.reveal = function (item) {
   item.block.classList.add('revealed')
   item.revealed = true
+  Mine.num_revealed += 1
 }
 
 Mine.flag = function (x, y, check = true) {
@@ -334,11 +342,7 @@ Mine.start_info = function () {
   Mine.update_info()
 
   Mine.bombs_el.addEventListener('click', function () {
-    if (Mine.playing) {
-      if (confirm('Restart game?')) Mine.start()
-    } else {
-      Mine.start()
-    }
+    Mine.ask_restart()
   })
 
   Mine.time_el.addEventListener('click', function () {
@@ -431,4 +435,50 @@ Mine.unpause = function () {
   if (Mine.playing) return
   Mine.playing = true
   Mine.update_time()
+}
+
+Mine.start_levels = function () {
+  Mine.levels_el.addEventListener('click', function (e) {
+    let level = e.target.dataset.level
+    if (level) {
+      if (level === Mine.level) return
+
+      for (let div of Array.from(Mine.levels_el.querySelectorAll('div'))) {
+        div.classList.remove('level_selected')
+      }
+
+      Mine[`level_${level}_el`].classList.add('level_selected')
+      Mine.level = level
+      Mine.ask_restart()
+    }
+  })
+}
+
+Mine.ask_restart = function () {
+  if (Mine.playing) {
+    if (Mine.num_revealed > 0) {
+      if (confirm('Restart Game?')) Mine.start()
+      return
+    }
+  }
+
+  Mine.start()
+}
+
+Mine.check_level = function () {
+  if (Mine.level === 'small') {
+    Mine.initial_bombs = 10
+    Mine.grid_size = 10
+    Mine.max_time = 100
+
+  } else if(Mine.level === 'normal') {
+    Mine.initial_bombs = 30
+    Mine.grid_size = 15
+    Mine.max_time = 300
+
+  } else if(Mine.level === 'big') {
+    Mine.initial_bombs = 60
+    Mine.grid_size = 20
+    Mine.max_time = 600
+  }
 }
