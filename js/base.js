@@ -297,7 +297,9 @@ Mine.start_info = function () {
   Mine.update_info()
 
   Mine.bombs_el.addEventListener('click', function () {
-    if (!Mine.playing) {
+    if (Mine.playing) {
+      if (confirm('Restart game?')) Mine.start()
+    } else {
       Mine.start()
     }
   })
