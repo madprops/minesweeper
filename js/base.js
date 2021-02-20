@@ -15,7 +15,6 @@ Mine.init = function () {
   })
 
   Mine.start()
-  Mine.start_time()
   Mine.start_info()
 }
 
@@ -27,6 +26,7 @@ Mine.start = function () {
   Mine.create_bombs()
   Mine.check_bombs()
   Mine.update_info()
+  Mine.start_time()
 }
 
 Mine.create_grid = function () {
@@ -310,7 +310,9 @@ Mine.update_time = function () {
 }
 
 Mine.start_time = function () {
-  setInterval(() => {
+  clearInterval(Mine.time_interval)
+  
+  Mine.time_interval = setInterval(() => {
     if (Mine.playing) {
       Mine.time += 1
       Mine.update_time()
