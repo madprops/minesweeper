@@ -9,9 +9,6 @@ Mine.init = function () {
   Mine.bombs_el = document.querySelector('#bombs')
   Mine.time_el = document.querySelector('#time')
   Mine.levels_el = document.querySelector('#levels')
-  Mine.level_small_el = document.querySelector('#level_small')
-  Mine.level_normal_el = document.querySelector('#level_normal')
-  Mine.level_big_el = document.querySelector('#level_big')
   Mine.explosion_fx = document.querySelector('#audio_explosion')
   Mine.click_fx = document.querySelector('#audio_click')
   Mine.victory_fx = document.querySelector('#audio_victory')
@@ -103,7 +100,7 @@ Mine.shuffle = function (arr) {
 
 Mine.create_bombs = function (x, y) {
   if (Mine.bombs_created) return
-  
+
   let pairs = []
   for (let x = 0; x < Mine.grid_size; x++) {
     for (let y = 0; y < Mine.grid_size; y++) {
@@ -469,24 +466,17 @@ Mine.start_levels = function () {
 
       for (let div of Array.from(Mine.levels_el.querySelectorAll('div'))) {
         div.classList.remove('level_selected')
+        if (div.dataset.level === level) {
+          div.classList.add('level_selected')
+        } else {
+          div.classList.remove('level_selected')
+        }
       }
 
-      Mine[`level_${level}_el`].classList.add('level_selected')
       Mine.level = level
       Mine.ask_restart()
     }
   })
-}
-
-Mine.ask_restart = function () {
-  if (Mine.playing) {
-    if (Mine.num_clicks > 1) {
-      if (confirm('Restart Game?')) Mine.start()
-      return
-    }
-  }
-
-  Mine.start()
 }
 
 Mine.check_level = function () {
@@ -504,5 +494,21 @@ Mine.check_level = function () {
     Mine.initial_bombs = 60
     Mine.grid_size = 20
     Mine.max_time = 600
+
+  } else if(Mine.level === 'insane') {
+    Mine.initial_bombs = 100
+    Mine.grid_size = 20
+    Mine.max_time = 100
   }
+}
+
+Mine.ask_restart = function () {
+  if (Mine.playing) {
+    if (Mine.num_clicks > 1) {
+      if (confirm('Restart Game?')) Mine.start()
+      return
+    }
+  }
+
+  Mine.start()
 }
