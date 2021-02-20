@@ -1,0 +1,83 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+}
+
+#main {
+  background-color: rgb(22, 20, 20);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#info {
+  color: white;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 12px;
+  width: 800px;
+  font-size: 20px;
+}
+
+#time {
+  margin-left: auto;
+}
+
+#grid {
+  background-color: lightblue;
+  width: 800px;
+  height: 800px;
+  position: relative;
+}
+
+.block {
+  box-shadow: 0 0 0.29rem rgb(95, 120, 189);
+  position: absolute;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 33.3%;
+}
+
+.revealed {
+  background-color: rgb(120, 182, 120);
+}
+
+.block .number {
+  display: none;
+  color: rgb(77, 77, 77);
+}
+
+.revealed .number {
+  display: block;
+}
+
+.bomb.revealed {
+  background-color: #c17b7b;
+}
+
+.bombhit {
+  background-color: pink;
+}
+
+.flag {
+  background-color: lightsalmon;
+}
+
+.bomb.flag {
+  background-color: lightsalmon;
+}
+
+#bombs {
+  cursor: pointer;
+}
+
+.bombhit {
+  border: 5px #b34de2 solid;
+  box-sizing: border-box;
+}
