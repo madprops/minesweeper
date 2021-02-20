@@ -15,6 +15,10 @@ Mine.init = function () {
     e.preventDefault()
   })
 
+  window.onblur = function () {
+    Mine.pause()
+  }
+
   Mine.start()
   Mine.start_info()
 }
@@ -328,6 +332,10 @@ Mine.start_info = function () {
       Mine.start()
     }
   })
+
+  Mine.time_el.addEventListener('click', function () {
+    Mine.toggle_pause()
+  })
 }
 
 Mine.update_info = function () {
@@ -393,4 +401,22 @@ Mine.playsound = function (el) {
   el.pause()
   el.currentTime = 0
   el.play()
+}
+
+Mine.toggle_pause = function () {
+  if (Mine.playing) {
+    Mine.pause()
+  } else {
+    Mine.unpause()
+  }
+}
+
+Mine.pause = function () {
+  Mine.playing = false
+  Mine.time_el.textContent += ' (Paused)'
+}
+
+Mine.unpause = function () {
+  Mine.playing = true
+  Mine.update_time()
 }
