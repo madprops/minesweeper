@@ -1,7 +1,7 @@
 :root {
   --size: 777px;
   --padding1: 5px;
-  --bgcolor1: rgb(22, 20, 20);
+  --bgcolor1: rgb(69, 73, 103);
   --bgcolor2: lightblue;
   --bgcolor3: #a8c8d2;
   --bgcolor4: #87c2f6;
@@ -24,9 +24,7 @@ body, html {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background: url(../css/bg.jpg);
-  background-size: cover;
-  background-repeat: no-repeat;
+  background-color: var(--bgcolor1);
 }
 
 #top {
@@ -79,9 +77,10 @@ body, html {
   height: var(--size);
   position: relative;
   user-select: none;
-  border-bottom-left-radius: 5%;
-  border-bottom-right-radius: 5%;
+  border-bottom-left-radius: 1%;
+  border-bottom-right-radius: 1%;
   cursor: pointer;
+  overflow: hidden;
 }
 
 .block {
@@ -139,15 +138,15 @@ body, html {
 
 @keyframes bgchange {
   0% {
-    filter: grayscale(0);
+    background-color: var(--bgcolor1);
   }
 
   50% {
-    filter: grayscale(1);
+    background-color: red;
   }
 
   100% {
-    filter: grayscale(0);
+    background-color: var(--bgcolor1);
   }
 }
 
