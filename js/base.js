@@ -12,6 +12,7 @@ Mine.init = function () {
   Mine.explosion_fx = document.querySelector('#audio_explosion')
   Mine.click_fx = document.querySelector('#audio_click')
   Mine.victory_fx = document.querySelector('#audio_victory')
+  Mine.start_fx = document.querySelector('#audio_start')
   Mine.grid_el.addEventListener('contextmenu', function (e) {
     e.preventDefault()
   })
@@ -44,6 +45,7 @@ Mine.start = function () {
   Mine.bombs_created = false
   Mine.update_info()
   Mine.start_time()
+  Mine.playsound(Mine.start_fx)
 }
 
 Mine.create_grid = function () {
