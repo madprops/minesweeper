@@ -27,12 +27,13 @@ Mine.init = function () {
     false
   )
 
-  Mine.start()
   Mine.start_info()
   Mine.start_levels()
+  Mine.prepare_game()
 }
 
-Mine.start = function () {
+Mine.prepare_game = function () {
+  Mine.game_started = false
   Mine.check_level()
   Mine.over = false
   Mine.num_revealed = 0
@@ -40,12 +41,10 @@ Mine.start = function () {
   Mine.main_el.classList.remove('boom')
   Mine.playing = true
   Mine.num_bombs = Mine.initial_bombs
-  Mine.time = 0
   Mine.create_grid()
-  Mine.bombs_created = false
+  clearInterval(Mine.time_interval)
+  Mine.time = 0
   Mine.update_info()
-  Mine.start_time()
-  Mine.playsound(Mine.start_fx)
 }
 
 Mine.create_grid = function () {
@@ -100,8 +99,8 @@ Mine.shuffle = function (arr) {
   return [arr[rand], ...Mine.shuffle(arr.filter((_, i) => i != rand))]
 }
 
-Mine.create_bombs = function (x, y) {
-  if (Mine.bombs_created) return
+Mine.start_game = function (x, y) {
+  if (Mine.game_started) return
 
   let pairs = []
   for (let x = 0; x < Mine.grid_size; x++) {
@@ -121,8 +120,10 @@ Mine.create_bombs = function (x, y) {
     if (num >= Mine.num_bombs) break
   }
 
-  Mine.bombs_created = true
+  Mine.game_started = true
   Mine.check_bombs()
+  Mine.start_time()
+  Mine.playsound(Mine.start_fx)
 }
 
 Mine.check_bombs = function () {
@@ -204,8 +205,7 @@ Mine.random_int = function (min, max) {
 Mine.onclick = function (x, y) {
   if (Mine.over) return
   if (!Mine.playing) Mine.unpause()
-
-  Mine.create_bombs(x, y)
+  Mine.start_game(x, y)
   let item = Mine.grid[x][y]
   if (item.revealed) return
   
@@ -327,7 +327,7 @@ Mine.reveal = function (item) {
 Mine.flag = function (x, y, check = true) {
   if (Mine.over) return
   if (!Mine.playing) Mine.unpause()
-  Mine.create_bombs(x, y)
+  Mine.start_game(x, y)
   let item = Mine.grid[x][y]
   if (item.revealed) return
   item.flag = !item.flag
@@ -362,8 +362,6 @@ Mine.update_bombs = function () {
 }
 
 Mine.start_info = function () {
-  Mine.update_info()
-
   Mine.bombs_el.addEventListener('click', function () {
     Mine.ask_restart()
   })
@@ -515,10 +513,10 @@ Mine.check_level = function () {
 Mine.ask_restart = function () {
   if (Mine.playing) {
     if (Mine.num_clicks > 1) {
-      if (confirm('Restart Game?')) Mine.start()
+      if (confirm('Restart Game?')) Mine.prepare_game()
       return
     }
   }
 
-  Mine.start()
+  Mine.prepare_game()
 }
