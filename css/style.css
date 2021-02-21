@@ -81,6 +81,7 @@ body, html {
   user-select: none;
   border-bottom-left-radius: 5%;
   border-bottom-right-radius: 5%;
+  cursor: pointer;
 }
 
 .block {
@@ -91,12 +92,10 @@ body, html {
   align-items: center;
   justify-content: center;
   border-radius: 33.3%;
-  cursor: pointer;
 }
 
 .revealed {
   background-color: var(--bgcolor3);
-  cursor: unset;
 }
 
 .block .number {
