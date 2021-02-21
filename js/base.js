@@ -511,7 +511,7 @@ Mine.check_level = function () {
 }
 
 Mine.ask_restart = function () {
-  if (Mine.playing) {
+  if (!Mine.over) {
     if (Mine.num_clicks > 1) {
       if (confirm('Restart Game?')) Mine.prepare_game()
       return
