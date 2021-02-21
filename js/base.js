@@ -202,7 +202,9 @@ Mine.random_int = function (min, max) {
 }
 
 Mine.onclick = function (x, y) {
-  if (!Mine.playing) return
+  if (Mine.over) return
+  if (!Mine.playing) Mine.unpause()
+
   Mine.create_bombs(x, y)
   let item = Mine.grid[x][y]
   if (item.revealed) return
@@ -323,7 +325,8 @@ Mine.reveal = function (item) {
 }
 
 Mine.flag = function (x, y, check = true) {
-  if (!Mine.playing) return
+  if (Mine.over) return
+  if (!Mine.playing) Mine.unpause()
   Mine.create_bombs(x, y)
   let item = Mine.grid[x][y]
   if (item.revealed) return
