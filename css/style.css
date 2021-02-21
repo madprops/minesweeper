@@ -154,3 +154,10 @@ body, html {
 .boom {
   animation: bgchange 500ms forwards;
 }
+
+.face {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  margin-right: 8px;
+}

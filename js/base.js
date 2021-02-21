@@ -13,6 +13,15 @@ Mine.init = function () {
   Mine.click_fx = document.querySelector('#audio_click')
   Mine.victory_fx = document.querySelector('#audio_victory')
   Mine.start_fx = document.querySelector('#audio_start')
+  Mine.face_el = document.querySelector('#face')
+
+  Mine.start_events()
+  Mine.start_info()
+  Mine.start_levels()
+  Mine.prepare_game()
+}
+
+Mine.start_events = function () {
   Mine.grid_el.addEventListener('contextmenu', function (e) {
     e.preventDefault()
   })
@@ -27,9 +36,18 @@ Mine.init = function () {
     false
   )
 
-  Mine.start_info()
-  Mine.start_levels()
-  Mine.prepare_game()
+  Mine.grid_el.addEventListener('mousedown', function () {
+    Mine.change_face('pressing')
+  })
+
+  Mine.grid_el.addEventListener('mouseup', function () {
+    Mine.change_face('waiting')
+  })
+}
+
+Mine.change_face = function (s, force = false) {
+  if (!force && Mine.over) return
+  Mine.face_el.src = `img/face_${s}.png`
 }
 
 Mine.prepare_game = function () {
@@ -45,6 +63,7 @@ Mine.prepare_game = function () {
   clearInterval(Mine.time_interval)
   Mine.time = 0
   Mine.update_info()
+  Mine.change_face('waiting')
 }
 
 Mine.create_grid = function () {
@@ -251,14 +270,17 @@ Mine.gameover = function (mode) {
   }
 
   if (mode === "won") {
-    Mine.bombs_el.textContent += ' - You Won! (Click to Restart)'
+    Mine.bombs_el.textContent += ' - You Won!'
     Mine.playsound(Mine.victory_fx)
+    Mine.change_face('won', true)
   } else if (mode === "explosion") {
-    Mine.bombs_el.textContent += ' - Boom! (Click to Restart)'
+    Mine.bombs_el.textContent += ' - Boom!'
     Mine.playsound(Mine.explosion_fx)
+    Mine.change_face('lost', true)
   } else if (mode === "timeout") {
-    Mine.bombs_el.textContent += ' - Out of Time! (click to restart)'
+    Mine.bombs_el.textContent += ' - Out of Time!'
     Mine.playsound(Mine.explosion_fx)
+    Mine.change_face('lost', true)
   }
 
   if (mode !== "won") {
@@ -362,6 +384,10 @@ Mine.update_bombs = function () {
 }
 
 Mine.start_info = function () {
+  Mine.face_el.addEventListener('click', function () {
+    Mine.ask_restart()
+  })
+
   Mine.bombs_el.addEventListener('click', function () {
     Mine.ask_restart()
   })
@@ -381,7 +407,7 @@ Mine.timestring = function (n) {
 }
 
 Mine.update_time = function () {
-  Mine.time_el.textContent = Mine.timestring(Mine.time) + ' / ' + Mine.timestring(Mine.max_time)
+  Mine.time_el.textContent = 'Time: ' + Mine.timestring(Mine.time) + ' / ' + Mine.timestring(Mine.max_time)
 }
 
 Mine.start_time = function () {
