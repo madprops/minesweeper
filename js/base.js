@@ -388,10 +388,6 @@ Mine.start_info = function () {
     Mine.ask_restart()
   })
 
-  Mine.bombs_el.addEventListener('click', function () {
-    Mine.ask_restart()
-  })
-
   Mine.time_el.addEventListener('click', function () {
     Mine.toggle_pause()
   })
