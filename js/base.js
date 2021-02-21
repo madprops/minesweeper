@@ -468,6 +468,7 @@ Mine.toggle_pause = function () {
 
 Mine.pause = function () {
   if (Mine.over) return
+  if (!Mine.game_started) return
   if (!Mine.playing) return
   Mine.playing = false
   Mine.time_el.textContent += ' (Paused)'
