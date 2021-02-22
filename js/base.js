@@ -95,6 +95,8 @@ Mine.create_grid = function () {
       Mine.grid_el.append(block)
 
       let item = {}
+      item.x = xx
+      item.y = yy
       item.block = block
       item.revealed = false
       row.push(item)
@@ -259,7 +261,7 @@ Mine.gameover = function (mode) {
     for (let item of row) {
       if (item.bomb) {
         if (!item.revealed) {
-          Mine.reveal(item)
+          Mine.reveal(item.x, item.y)
         }
 
         if (item.flag) {
@@ -292,7 +294,7 @@ Mine.floodfill = function (x, y) {
   let item = Mine.grid[x][y]
 
   if (item.number > 0) {
-    Mine.reveal(item)
+    Mine.reveal(x, y)
     return
   }
 
@@ -325,7 +327,7 @@ Mine.fill = function (x, y) {
   let cont = item.number === 0
 
   if (!item.revealed) {
-    Mine.reveal(item)
+    Mine.reveal(x, y)
   }
 
   if (cont) {
@@ -340,7 +342,13 @@ Mine.fill = function (x, y) {
   }
 }
 
-Mine.reveal = function (item) {
+Mine.reveal = function (x, y) {
+  let item = Mine.grid[x][y]
+
+  if (item.flag) {
+    Mine.flag(x, y)
+  }
+
   item.block.classList.add('revealed')
   item.revealed = true
   Mine.num_revealed += 1
