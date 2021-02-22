@@ -230,10 +230,6 @@ Mine.onclick = function (x, y) {
   let item = Mine.grid[x][y]
   if (item.revealed) return
   
-  if (item.flag) {
-    Mine.flag(x, y, false)
-  }
-  
   Mine.num_clicks += 1
 
   if (item.bomb) {
