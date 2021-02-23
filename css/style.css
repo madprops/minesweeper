@@ -1,6 +1,7 @@
 :root {
   --size: 720px;
   --padding1: 5px;
+  --padding2: 10px;
   --bgcolor1: rgb(69, 73, 103);
   --bgcolor2: lightblue;
   --bgcolor3: #a8c8d2;
@@ -49,8 +50,10 @@ body, html {
 }
 
 #levels > div {
-  padding: var(--padding1);
   cursor: pointer;
+  padding: var(--padding1);
+  padding-left: var(--padding2);
+  padding-right: var(--padding2);
 }
 
 .level_selected {
