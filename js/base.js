@@ -283,15 +283,15 @@ Mine.gameover = function (mode) {
   }
 
   if (mode === 'won') {
-    Mine.bombs_el.textContent = 'You Won!'
+    Mine.bombs_el.textContent = 'You cleared all the mines!'
     Mine.playsound(Mine.victory_fx)
     Mine.change_face('won', true)
   } else if (mode === 'explosion') {
-    Mine.bombs_el.textContent += ' - Boom!'
+    Mine.bombs_el.textContent = 'You stepped on a mine!'
     Mine.playsound(Mine.explosion_fx)
     Mine.change_face('lost', true)
   } else if (mode === 'timeout') {
-    Mine.bombs_el.textContent += ' - Out of Time!'
+    Mine.bombs_el.textContent = 'You ran out of time!'
     Mine.playsound(Mine.explosion_fx)
     Mine.change_face('lost', true)
   }
@@ -395,7 +395,7 @@ Mine.update_bombs = function () {
     s = 'Bombs'
   }
 
-  Mine.bombs_el.textContent = `${Mine.num_bombs} ${s} Left`
+  Mine.bombs_el.textContent = `${Mine.num_bombs} ${s} Left (${Mine.grid_size} x ${Mine.grid_size})`
 }
 
 Mine.start_info = function () {
