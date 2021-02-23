@@ -26,6 +26,7 @@ body, html {
   justify-content: center;
   flex-direction: column;
   background-color: var(--bgcolor1);
+  overflow: hidden;
 }
 
 #top {
@@ -63,7 +64,7 @@ body, html {
 #info {
   display: flex;
   flex-direction: row;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   user-select: none;
   background-color: var(--bgcolor6);
 }
@@ -83,7 +84,6 @@ body, html {
   border-bottom-left-radius: 1%;
   border-bottom-right-radius: 1%;
   cursor: pointer;
-  overflow: hidden;
 }
 
 .block {
