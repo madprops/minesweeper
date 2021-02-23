@@ -516,7 +516,7 @@ Mines.check_level = function () {
   } else if(Mines.level === 'expert') {
     Mines.initial_mines = 80
     Mines.grid_size = 20
-    Mines.max_time = 200
+    Mines.max_time = 300
   }
 }
 
