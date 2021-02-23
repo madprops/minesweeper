@@ -45,8 +45,10 @@ Mine.start_events = function () {
   })
 
   document.addEventListener('keyup', function (e) {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       Mine.ask_restart()
+    } else if (e.key === ' ') {
+      Mine.toggle_pause()
     }
   })
 }
