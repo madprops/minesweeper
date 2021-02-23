@@ -271,13 +271,8 @@ Mines.gameover = function (mode) {
   for (let row of Mines.grid) {
     for (let item of row) {
       if (item.mine) {
-        if (!item.revealed) {
-          Mines.reveal(item.x, item.y)
-        }
-
-        if (item.flag) {
-          Mines.setnumber(item, item.og_number)
-        }
+        item.block.classList.add('flag')        
+        Mines.setnumber(item, item.og_number)
       }
     }
   }
