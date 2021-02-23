@@ -513,10 +513,10 @@ Mine.check_level = function () {
     Mine.grid_size = 20
     Mine.max_time = 600
 
-  } else if(Mine.level === 'insane') {
-    Mine.initial_bombs = 100
+  } else if(Mine.level === 'expert') {
+    Mine.initial_bombs = 80
     Mine.grid_size = 20
-    Mine.max_time = 100
+    Mine.max_time = 200
   }
 }
 
