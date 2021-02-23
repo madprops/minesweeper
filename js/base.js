@@ -395,7 +395,7 @@ Mines.update_mines = function () {
     s = 'mines'
   }
 
-  Mines.mines_el.textContent = `${Mines.num_mines} ${s} (${Mines.grid_size} x ${Mines.grid_size})`
+  Mines.mines_el.textContent = `${Mines.num_mines} / ${Mines.initial_mines} ${s} (${Mines.grid_size} x ${Mines.grid_size})`
 }
 
 Mines.start_info = function () {
