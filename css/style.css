@@ -113,11 +113,11 @@ body, html {
   display: block;
 }
 
-.bomb.revealed {
+.mine.revealed {
   background-color: #cd8787
 }
 
-.bombhit {
+.minehit {
   background-color: pink;
 }
 
@@ -125,15 +125,15 @@ body, html {
   background-color: var(--bgcolor4);
 }
 
-.bomb.flag {
+.mine.flag {
   background-color: var(--bgcolor4);;
 }
 
-#bombs {
+#mines {
   padding: var(--padding1);
 }
 
-.bombhit {
+.minehit {
   border: 5px #b34de2 solid;
   box-sizing: border-box;
 }

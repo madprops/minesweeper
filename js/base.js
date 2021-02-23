@@ -1,28 +1,28 @@
-const Mine = {}
-Mine.level = 'normal'
+const Mines = {}
+Mines.level = 'normal'
 
-Mine.init = function () {
+Mines.init = function () {
   let style = getComputedStyle(document.body)
-  Mine.size = parseInt(style.getPropertyValue('--size'))
-  Mine.main_el = document.querySelector('#main')
-  Mine.grid_el = document.querySelector('#grid')
-  Mine.bombs_el = document.querySelector('#bombs')
-  Mine.time_el = document.querySelector('#time')
-  Mine.levels_el = document.querySelector('#levels')
-  Mine.explosion_fx = document.querySelector('#audio_explosion')
-  Mine.click_fx = document.querySelector('#audio_click')
-  Mine.victory_fx = document.querySelector('#audio_victory')
-  Mine.start_fx = document.querySelector('#audio_start')
-  Mine.face_el = document.querySelector('#face')
+  Mines.size = parseInt(style.getPropertyValue('--size'))
+  Mines.main_el = document.querySelector('#main')
+  Mines.grid_el = document.querySelector('#grid')
+  Mines.mines_el = document.querySelector('#mines')
+  Mines.time_el = document.querySelector('#time')
+  Mines.levels_el = document.querySelector('#levels')
+  Mines.explosion_fx = document.querySelector('#audio_explosion')
+  Mines.click_fx = document.querySelector('#audio_click')
+  Mines.victory_fx = document.querySelector('#audio_victory')
+  Mines.start_fx = document.querySelector('#audio_start')
+  Mines.face_el = document.querySelector('#face')
 
-  Mine.start_events()
-  Mine.start_info()
-  Mine.start_levels()
-  Mine.prepare_game()
+  Mines.start_events()
+  Mines.start_info()
+  Mines.start_levels()
+  Mines.prepare_game()
 }
 
-Mine.start_events = function () {
-  Mine.grid_el.addEventListener('contextmenu', function (e) {
+Mines.start_events = function () {
+  Mines.grid_el.addEventListener('contextmenu', function (e) {
     e.preventDefault()
   })
 
@@ -30,60 +30,60 @@ Mine.start_events = function () {
     'visibilitychange',
     function () {
       if (document.hidden) {
-        Mine.pause()
+        Mines.pause()
       }
     },
     false
   )
 
-  Mine.grid_el.addEventListener('mousedown', function () {
-    Mine.change_face('pressing')
+  Mines.grid_el.addEventListener('mousedown', function () {
+    Mines.change_face('pressing')
   })
 
-  Mine.grid_el.addEventListener('mouseup', function () {
-    Mine.change_face('waiting')
+  Mines.grid_el.addEventListener('mouseup', function () {
+    Mines.change_face('waiting')
   })
 
   document.addEventListener('keyup', function (e) {
     if (e.key === 'Enter') {
-      Mine.ask_restart()
+      Mines.ask_restart()
     } else if (e.key === ' ') {
-      Mine.toggle_pause()
+      Mines.toggle_pause()
     }
   })
 }
 
-Mine.change_face = function (s, force = false) {
-  if (!force && Mine.over) return
-  Mine.face_el.src = `img/face_${s}.png`
+Mines.change_face = function (s, force = false) {
+  if (!force && Mines.over) return
+  Mines.face_el.src = `img/face_${s}.png`
 }
 
-Mine.prepare_game = function () {
-  Mine.game_started = false
-  Mine.check_level()
-  Mine.over = false
-  Mine.num_revealed = 0
-  Mine.num_clicks = 0
-  Mine.main_el.classList.remove('boom')
-  Mine.playing = true
-  Mine.num_bombs = Mine.initial_bombs
-  Mine.create_grid()
-  clearInterval(Mine.time_interval)
-  Mine.time = 0
-  Mine.update_info()
-  Mine.change_face('waiting')
+Mines.prepare_game = function () {
+  Mines.game_started = false
+  Mines.check_level()
+  Mines.over = false
+  Mines.num_revealed = 0
+  Mines.num_clicks = 0
+  Mines.main_el.classList.remove('boom')
+  Mines.playing = true
+  Mines.num_mines = Mines.initial_mines
+  Mines.create_grid()
+  clearInterval(Mines.time_interval)
+  Mines.time = 0
+  Mines.update_info()
+  Mines.change_face('waiting')
 }
 
-Mine.create_grid = function () {
-  Mine.grid_el.innerHTML = ''
-  Mine.grid = []
-  let size = Mine.size / Mine.grid_size
+Mines.create_grid = function () {
+  Mines.grid_el.innerHTML = ''
+  Mines.grid = []
+  let size = Mines.size / Mines.grid_size
   let x = 0
   let y = 0
   let row = []
 
-  for (let xx = 0; xx < Mine.grid_size; xx++) {
-    for (let yy = 0; yy < Mine.grid_size; yy++) {
+  for (let xx = 0; xx < Mines.grid_size; xx++) {
+    for (let yy = 0; yy < Mines.grid_size; yy++) {
       let block = document.createElement('div')
       block.style.width = size + 'px'
       block.style.height = size + 'px'
@@ -92,15 +92,15 @@ Mine.create_grid = function () {
       block.classList.add('block')
 
       block.addEventListener('click', function () {
-        Mine.onclick(xx, yy)
+        Mines.onclick(xx, yy)
       })
 
       block.addEventListener('contextmenu', function (e) {
-        Mine.flag(xx, yy)
+        Mines.flag(xx, yy)
         e.preventDefault()
       })
 
-      Mine.grid_el.append(block)
+      Mines.grid_el.append(block)
 
       let item = {}
       item.x = xx
@@ -112,7 +112,7 @@ Mine.create_grid = function () {
       x += size
     }
 
-    Mine.grid.push(row)
+    Mines.grid.push(row)
     row = []
 
     x = 0
@@ -120,21 +120,21 @@ Mine.create_grid = function () {
   }
 }
 
-Mine.shuffle = function (arr) {
+Mines.shuffle = function (arr) {
   if (arr.length === 1) {
     return arr
   }
   const rand = Math.floor(Math.random() * arr.length)
-  return [arr[rand], ...Mine.shuffle(arr.filter((_, i) => i != rand))]
+  return [arr[rand], ...Mines.shuffle(arr.filter((_, i) => i != rand))]
 }
 
-Mine.start_game = function (x, y) {
-  if (Mine.game_started) return
+Mines.start_game = function (x, y) {
+  if (Mines.game_started) return
 
   let pairs = []
 
-  for (let xx = 0; xx < Mine.grid_size; xx++) {
-    for (let yy = 0; yy < Mine.grid_size; yy++) {
+  for (let xx = 0; xx < Mines.grid_size; xx++) {
+    for (let yy = 0; yy < Mines.grid_size; yy++) {
       if (xx === x && yy === y) continue
 
       if (xx >= x - 1 && xx <= x + 1) {
@@ -147,79 +147,79 @@ Mine.start_game = function (x, y) {
 
   let num = 0
 
-  for (let p of Mine.shuffle(pairs)) {
-    let item = Mine.grid[p[0]][p[1]]
-    item.bomb = true
-    item.block.classList.add('bomb')
+  for (let p of Mines.shuffle(pairs)) {
+    let item = Mines.grid[p[0]][p[1]]
+    item.mine = true
+    item.block.classList.add('mine')
     num += 1
-    if (num >= Mine.num_bombs) break
+    if (num >= Mines.num_mines) break
   }
 
-  Mine.game_started = true
-  Mine.check_bombs()
-  Mine.start_time()
-  Mine.playsound(Mine.start_fx)
+  Mines.game_started = true
+  Mines.check_mines()
+  Mines.start_time()
+  Mines.playsound(Mines.start_fx)
 }
 
-Mine.check_bombs = function () {
-  for (let x = 0; x < Mine.grid_size; x++) {
-    for (let y = 0; y < Mine.grid_size; y++) {
+Mines.check_mines = function () {
+  for (let x = 0; x < Mines.grid_size; x++) {
+    for (let y = 0; y < Mines.grid_size; y++) {
       let number = 0
 
       if (y > 0) {
-        if (Mine.grid[x][y - 1].bomb) {
+        if (Mines.grid[x][y - 1].mine) {
           number += 1
         }
 
         if (x > 0) {
-          if (Mine.grid[x - 1][y - 1].bomb) {
+          if (Mines.grid[x - 1][y - 1].mine) {
             number += 1
           }
         }
 
-        if (x < Mine.grid_size - 1) {
-          if (Mine.grid[x + 1][y - 1].bomb) {
+        if (x < Mines.grid_size - 1) {
+          if (Mines.grid[x + 1][y - 1].mine) {
             number += 1
           }
         }
       }
 
       if (x > 0) {
-        if (Mine.grid[x - 1][y].bomb) {
+        if (Mines.grid[x - 1][y].mine) {
           number += 1
         }
       }
 
-      if (x < Mine.grid_size - 1) {
-        if (Mine.grid[x + 1][y].bomb) {
+      if (x < Mines.grid_size - 1) {
+        if (Mines.grid[x + 1][y].mine) {
           number += 1
         }
       }
 
-      if (y < Mine.grid_size - 1) {
-        if (Mine.grid[x][y + 1].bomb) {
+      if (y < Mines.grid_size - 1) {
+        if (Mines.grid[x][y + 1].mine) {
           number += 1
         }
 
         if (x > 0) {
-          if (Mine.grid[x - 1][y + 1].bomb) {
+          if (Mines.grid[x - 1][y + 1].mine) {
             number += 1
           }
         }
 
-        if (x < Mine.grid_size - 1) {
-          if (Mine.grid[x + 1][y + 1].bomb) {
+        if (x < Mines.grid_size - 1) {
+          if (Mines.grid[x + 1][y + 1].mine) {
             number += 1
           }
         }
       }
 
-      let item = Mine.grid[x][y]
+      let item = Mines.grid[x][y]
       item.number = number
       let text = document.createElement('div')
       text.classList.add('number')
 
-      if (item.bomb) {
+      if (item.mine) {
         text.textContent = '💣️'
       } else {
         if (number > 0) {
@@ -233,86 +233,86 @@ Mine.check_bombs = function () {
   }
 }
 
-Mine.random_int = function (min, max) {
+Mines.random_int = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-Mine.onclick = function (x, y) {
-  if (Mine.over) return
-  if (!Mine.playing) Mine.unpause()
-  Mine.start_game(x, y)
-  let item = Mine.grid[x][y]
+Mines.onclick = function (x, y) {
+  if (Mines.over) return
+  if (!Mines.playing) Mines.unpause()
+  Mines.start_game(x, y)
+  let item = Mines.grid[x][y]
   if (item.revealed) return
   
-  Mine.num_clicks += 1
+  Mines.num_clicks += 1
 
-  if (item.bomb) {
-    item.block.classList.add('bombhit')
-    Mine.gameover('explosion')
+  if (item.mine) {
+    item.block.classList.add('minehit')
+    Mines.gameover('explosion')
     return
   } else {
     if (item.revealed) return
-    Mine.floodfill(x, y)
+    Mines.floodfill(x, y)
   }
 
-  if (!Mine.check_status()) {
-    Mine.playsound(Mine.click_fx)
+  if (!Mines.check_status()) {
+    Mines.playsound(Mines.click_fx)
   }
 }
 
-Mine.setnumber = function (item, s) {
+Mines.setnumber = function (item, s) {
   item.block.querySelector('.number').textContent = s
 }
 
-Mine.gameover = function (mode) {
-  Mine.over = true
-  Mine.playing = false
+Mines.gameover = function (mode) {
+  Mines.over = true
+  Mines.playing = false
 
-  for (let row of Mine.grid) {
+  for (let row of Mines.grid) {
     for (let item of row) {
-      if (item.bomb) {
+      if (item.mine) {
         if (!item.revealed) {
-          Mine.reveal(item.x, item.y)
+          Mines.reveal(item.x, item.y)
         }
 
         if (item.flag) {
-          Mine.setnumber(item, item.og_number)
+          Mines.setnumber(item, item.og_number)
         }
       }
     }
   }
 
   if (mode === 'won') {
-    Mine.bombs_el.textContent = 'You cleared all the mines!'
-    Mine.playsound(Mine.victory_fx)
-    Mine.change_face('won', true)
+    Mines.mines_el.textContent = 'You cleared all the mines!'
+    Mines.playsound(Mines.victory_fx)
+    Mines.change_face('won', true)
   } else if (mode === 'explosion') {
-    Mine.bombs_el.textContent = 'You stepped on a mine!'
-    Mine.playsound(Mine.explosion_fx)
-    Mine.change_face('lost', true)
+    Mines.mines_el.textContent = 'You stepped on a mine!'
+    Mines.playsound(Mines.explosion_fx)
+    Mines.change_face('lost', true)
   } else if (mode === 'timeout') {
-    Mine.bombs_el.textContent = 'You ran out of time!'
-    Mine.playsound(Mine.explosion_fx)
-    Mine.change_face('lost', true)
+    Mines.mines_el.textContent = 'You ran out of time!'
+    Mines.playsound(Mines.explosion_fx)
+    Mines.change_face('lost', true)
   }
 
   if (mode !== 'won') {
-    Mine.main_el.classList.add('boom')
+    Mines.main_el.classList.add('boom')
   }
 }
 
-Mine.floodfill = function (x, y) {
-  let item = Mine.grid[x][y]
+Mines.floodfill = function (x, y) {
+  let item = Mines.grid[x][y]
 
   if (item.number > 0) {
-    Mine.reveal(x, y)
+    Mines.reveal(x, y)
     return
   }
 
-  Mine.fill(x, y)
+  Mines.fill(x, y)
 }
 
-Mine.fill = function (x, y) {
+Mines.fill = function (x, y) {
   if (x < 0) {
     return
   }
@@ -321,15 +321,15 @@ Mine.fill = function (x, y) {
     return
   }
 
-  if (x > Mine.grid.length - 1) {
+  if (x > Mines.grid.length - 1) {
     return
   }
 
-  if (y > Mine.grid[x].length - 1) {
+  if (y > Mines.grid[x].length - 1) {
     return
   }
 
-  let item = Mine.grid[x][y]
+  let item = Mines.grid[x][y]
   
   if (item.revealed) {
     return
@@ -338,151 +338,151 @@ Mine.fill = function (x, y) {
   let cont = item.number === 0
 
   if (!item.revealed) {
-    Mine.reveal(x, y)
+    Mines.reveal(x, y)
   }
 
   if (cont) {
-    Mine.fill(x - 1, y)
-    Mine.fill(x + 1, y)
-    Mine.fill(x, y - 1)
-    Mine.fill(x, y + 1)
-    Mine.fill(x - 1, y + 1)
-    Mine.fill(x + 1, y - 1)
-    Mine.fill(x + 1, y + 1)
-    Mine.fill(x - 1, y - 1)
+    Mines.fill(x - 1, y)
+    Mines.fill(x + 1, y)
+    Mines.fill(x, y - 1)
+    Mines.fill(x, y + 1)
+    Mines.fill(x - 1, y + 1)
+    Mines.fill(x + 1, y - 1)
+    Mines.fill(x + 1, y + 1)
+    Mines.fill(x - 1, y - 1)
   }
 }
 
-Mine.reveal = function (x, y) {
-  let item = Mine.grid[x][y]
+Mines.reveal = function (x, y) {
+  let item = Mines.grid[x][y]
 
   if (item.flag) {
-    Mine.flag(x, y)
+    Mines.flag(x, y)
   }
 
   item.block.classList.add('revealed')
   item.revealed = true
-  Mine.num_revealed += 1
+  Mines.num_revealed += 1
 }
 
-Mine.flag = function (x, y) {
-  if (Mine.over) return
-  if (!Mine.playing) Mine.unpause()
-  Mine.start_game(x, y)
-  let item = Mine.grid[x][y]
+Mines.flag = function (x, y) {
+  if (Mines.over) return
+  if (!Mines.playing) Mines.unpause()
+  Mines.start_game(x, y)
+  let item = Mines.grid[x][y]
   if (item.revealed) return
   item.flag = !item.flag
 
   if (item.flag) {
     item.block.classList.add('flag')
-    Mine.setnumber(item, '⚑')
-    Mine.num_bombs -= 1
+    Mines.setnumber(item, '⚑')
+    Mines.num_mines -= 1
   } else {
     item.block.classList.remove('flag')
-    Mine.setnumber(item, item.og_number)
-    Mine.num_bombs += 1
+    Mines.setnumber(item, item.og_number)
+    Mines.num_mines += 1
   }
 
-  Mine.update_bombs()
+  Mines.update_mines()
 }
 
-Mine.update_bombs = function () {
+Mines.update_mines = function () {
   let s
 
-  if (Mine.num_bombs === 1) {
-    s = 'Bomb'
+  if (Mines.num_mines === 1) {
+    s = 'mines'
   } else {
-    s = 'Bombs'
+    s = 'mines'
   }
 
-  Mine.bombs_el.textContent = `${Mine.num_bombs} ${s} Left (${Mine.grid_size} x ${Mine.grid_size})`
+  Mines.mines_el.textContent = `${Mines.num_mines} ${s} (${Mines.grid_size} x ${Mines.grid_size})`
 }
 
-Mine.start_info = function () {
-  Mine.face_el.addEventListener('click', function () {
-    Mine.ask_restart()
+Mines.start_info = function () {
+  Mines.face_el.addEventListener('click', function () {
+    Mines.ask_restart()
   })
 
-  Mine.time_el.addEventListener('click', function () {
-    Mine.toggle_pause()
+  Mines.time_el.addEventListener('click', function () {
+    Mines.toggle_pause()
   })
 }
 
-Mine.update_info = function () {
-  Mine.update_bombs()
-  Mine.update_time()
+Mines.update_info = function () {
+  Mines.update_mines()
+  Mines.update_time()
 }
 
-Mine.timestring = function (n) {
+Mines.timestring = function (n) {
   return n.toString().padStart(3, '0')
 }
 
-Mine.update_time = function () {
-  Mine.time_el.textContent = 'Time: ' + Mine.timestring(Mine.time) + ' / ' + Mine.timestring(Mine.max_time)
+Mines.update_time = function () {
+  Mines.time_el.textContent = 'Time: ' + Mines.timestring(Mines.time) + ' / ' + Mines.timestring(Mines.max_time)
 }
 
-Mine.start_time = function () {
-  clearInterval(Mine.time_interval)
+Mines.start_time = function () {
+  clearInterval(Mines.time_interval)
 
-  Mine.time_interval = setInterval(() => {
-    if (Mine.playing) {
-      Mine.time += 1
-      Mine.update_time()
-      if (Mine.time >= Mine.max_time) {
-        Mine.gameover('timeout')
+  Mines.time_interval = setInterval(() => {
+    if (Mines.playing) {
+      Mines.time += 1
+      Mines.update_time()
+      if (Mines.time >= Mines.max_time) {
+        Mines.gameover('timeout')
       }
     }
   }, 1000)
 }
 
-Mine.check_status = function () {
-  if (Mine.num_revealed == (Mine.grid_size * Mine.grid_size) - Mine.initial_bombs) {
-    Mine.gameover('won')
+Mines.check_status = function () {
+  if (Mines.num_revealed == (Mines.grid_size * Mines.grid_size) - Mines.initial_mines) {
+    Mines.gameover('won')
     return true
   }
 
   return false
 }
 
-Mine.playsound = function (el) {
+Mines.playsound = function (el) {
   el.pause()
   el.currentTime = 0
   el.play()
 }
 
-Mine.toggle_pause = function () {
-  if (Mine.playing) {
-    Mine.pause()
+Mines.toggle_pause = function () {
+  if (Mines.playing) {
+    Mines.pause()
   } else {
-    Mine.unpause()
+    Mines.unpause()
   }
 }
 
-Mine.pause = function () {
-  if (Mine.over) return
-  if (!Mine.game_started) return
-  if (!Mine.playing) return
-  Mine.playing = false
-  Mine.time_el.textContent += ' (Paused)'
+Mines.pause = function () {
+  if (Mines.over) return
+  if (!Mines.game_started) return
+  if (!Mines.playing) return
+  Mines.playing = false
+  Mines.time_el.textContent += ' (Paused)'
 }
 
-Mine.unpause = function () {
-  if (Mine.over) return
-  if (Mine.playing) return
-  Mine.playing = true
-  Mine.update_time()
+Mines.unpause = function () {
+  if (Mines.over) return
+  if (Mines.playing) return
+  Mines.playing = true
+  Mines.update_time()
 }
 
-Mine.start_levels = function () {
-  Mine.levels_el.addEventListener('click', function (e) {
+Mines.start_levels = function () {
+  Mines.levels_el.addEventListener('click', function (e) {
     let level = e.target.dataset.level
     if (level) {
-      if (level === Mine.level) {
-        Mine.ask_restart()
+      if (level === Mines.level) {
+        Mines.ask_restart()
         return
       }
 
-      for (let div of Array.from(Mine.levels_el.querySelectorAll('div'))) {
+      for (let div of Array.from(Mines.levels_el.querySelectorAll('div'))) {
         div.classList.remove('level_selected')
         if (div.dataset.level === level) {
           div.classList.add('level_selected')
@@ -491,42 +491,42 @@ Mine.start_levels = function () {
         }
       }
 
-      Mine.level = level
-      Mine.ask_restart()
+      Mines.level = level
+      Mines.ask_restart()
     }
   })
 }
 
-Mine.check_level = function () {
-  if (Mine.level === 'easy') {
-    Mine.initial_bombs = 10
-    Mine.grid_size = 10
-    Mine.max_time = 100
+Mines.check_level = function () {
+  if (Mines.level === 'easy') {
+    Mines.initial_mines = 10
+    Mines.grid_size = 10
+    Mines.max_time = 100
 
-  } else if(Mine.level === 'normal') {
-    Mine.initial_bombs = 30
-    Mine.grid_size = 15
-    Mine.max_time = 300
+  } else if(Mines.level === 'normal') {
+    Mines.initial_mines = 30
+    Mines.grid_size = 15
+    Mines.max_time = 300
 
-  } else if(Mine.level === 'hard') {
-    Mine.initial_bombs = 60
-    Mine.grid_size = 20
-    Mine.max_time = 600
+  } else if(Mines.level === 'hard') {
+    Mines.initial_mines = 60
+    Mines.grid_size = 20
+    Mines.max_time = 600
 
-  } else if(Mine.level === 'expert') {
-    Mine.initial_bombs = 80
-    Mine.grid_size = 20
-    Mine.max_time = 200
+  } else if(Mines.level === 'expert') {
+    Mines.initial_mines = 80
+    Mines.grid_size = 20
+    Mines.max_time = 200
   }
 }
 
-Mine.ask_restart = function () {
-  if (!Mine.over) {
-    if (Mine.num_clicks > 1) {
-      if (confirm('Restart Game?')) Mine.prepare_game()
+Mines.ask_restart = function () {
+  if (!Mines.over) {
+    if (Mines.num_clicks > 1) {
+      if (confirm('Restart Game?')) Mines.prepare_game()
       return
     }
   }
 
-  Mine.prepare_game()
+  Mines.prepare_game()
 }
