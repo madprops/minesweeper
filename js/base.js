@@ -498,17 +498,17 @@ Mines.check_level = function () {
     Mines.grid_size = 10
     Mines.max_time = 100
 
-  } else if(Mines.level === 'normal') {
+  } else if (Mines.level === 'normal') {
     Mines.initial_mines = 30
     Mines.grid_size = 15
     Mines.max_time = 300
 
-  } else if(Mines.level === 'hard') {
+  } else if (Mines.level === 'hard') {
     Mines.initial_mines = 60
     Mines.grid_size = 20
     Mines.max_time = 600
 
-  } else if(Mines.level === 'expert') {
+  } else if (Mines.level === 'expert') {
     Mines.initial_mines = 80
     Mines.grid_size = 20
     Mines.max_time = 300
